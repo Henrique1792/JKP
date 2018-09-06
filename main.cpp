@@ -3,8 +3,9 @@
 
 using namespace std;
 
+
 int main(int argc, char *argv[]){
-    game *teste=new game();
+    game *teste=game::getInstance();
     teste->printGame();
     return 0;
 }

@@ -21,6 +21,11 @@
 
 class game{
     //Scope
+    
+    
+    private:
+        static game* instance;
+        game();
     public:
 
     //Atributes
@@ -28,7 +33,7 @@ class game{
     int rows, columns;
 
     //Methods
-    game();
+    static game *getInstance();
     ~game();
     void printGame();
 

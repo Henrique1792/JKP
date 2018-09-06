@@ -1,6 +1,12 @@
 #include "game.h"
 using namespace std;
 
+game* game::instance=0;
+game* game::getInstance(){
+	if(instance==0)
+		instance=new game();
+	return instance;
+};
 
 game::game(){
     std::vector<int> geIO=getLine();
