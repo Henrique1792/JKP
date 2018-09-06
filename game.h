@@ -13,7 +13,7 @@
 
 /*
  * JANKEN rules
- * trying to move x1 over x2
+ * check legal movement from x1 to x2 due to janken
 */
 
 #define CHECK_Kill(x1, x2) if((x1==SCISSORS && x2==PAPER) || (x1==PAPER && x2==ROCK) || (x1==ROCK && x2==SCISSORS)) return true; \
@@ -23,14 +23,15 @@ class game{
     //Scope
     public:
 
-    //Args
+    //Atributes
     std::vector<std::vector<int>> table;
     int rows, columns;
 
     //Methods
     game();
     ~game();
-    void setGame();
+    void printGame();
+
 };
 
 #endif

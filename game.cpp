@@ -3,23 +3,38 @@ using namespace std;
 
 
 game::game(){
-    std::vector<int> getFromFile=getLine();
-    rows=getFromFile[0];
-    columns=getFromFile[1];
+    std::vector<int> geIO=getLine();
+    rows=geIO[0];
+    columns=geIO[1];
 
-    getFromFile.clear();
-
+    geIO.clear();
 
     table.resize(rows); 
     for (int i=0; i<columns; i++)
         table[i].resize(columns);
 
+    for(int i=0; i<rows; i++){
+        geIO=getLine();
+        
+        for(int j=0; j<columns; j++)
+            table[i][j]=geIO[j];
+        
+        geIO.clear();
+    }
 
 };
 
 game::~game(void){
 };
 
-void game::setGame(){ 
+void game::printGame(){
+    int i, j;
+    printf("rows: %d, columns: %d\n", this->rows, this->columns);
+
+    for(i=0; i<this->rows;i++){
+        for(j=0; j<this->columns; j++)
+            printf("%d ", this->table[i][j]);
+        printf("\n");
+    }
 };
 

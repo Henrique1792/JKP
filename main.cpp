@@ -4,8 +4,7 @@
 using namespace std;
 
 int main(int argc, char *argv[]){
-    std::vector<int>line=getLine();
-    for(std::vector<int>::iterator p=line.begin(); p!=line.end(); p++)
-        cout << *p << " ";
+    game *teste=new game();
+    teste->printGame();
     return 0;
 }

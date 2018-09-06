@@ -3,7 +3,6 @@
 
 std::vector<int> getLine(){
 
-
     int n;
     std::string input;
     std::getline(std::cin, input);
