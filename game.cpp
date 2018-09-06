@@ -1,11 +1,11 @@
 #include "game.h"
-using namespace std;
+//using namespace std;
 
 game* game::instance=0;
 game* game::getInstance(){
-	if(instance==0)
-		instance=new game();
-	return instance;
+    if(instance==0)
+        instance=new game();
+    return instance;
 };
 
 game::game(){
@@ -21,10 +21,10 @@ game::game(){
 
     for(int i=0; i<rows; i++){
         geIO=getLine();
-        
+
         for(int j=0; j<columns; j++)
             table[i][j]=geIO[j];
-        
+
         geIO.clear();
     }
 
