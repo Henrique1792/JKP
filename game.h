@@ -16,9 +16,6 @@
  * check legal movement from x1 to x2 due to janken
  */
 
-#define CHECK_Kill(x1, x2) if((x1==SCISSORS && x2==PAPER) || (x1==PAPER && x2==ROCK) || (x1==ROCK && x2==SCISSORS)) return true; \
-                                  else return false;
-
 class game{
     //Scope
 
@@ -39,4 +36,7 @@ class game{
 
 };
 
+bool checkWin(std::vector<std::vector<int>> table, int row, int column);
 #endif
+
+bool checkMove(int x1, int x2);

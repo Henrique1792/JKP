@@ -44,3 +44,28 @@ void game::printGame(){
     }
 };
 
+
+bool checkWin(std::vector<std::vector<int>> table, int row, int column){
+    int i, j, k=0;
+
+    for(i=0;i<row;i++){
+        for(j=0;j<column;j++){
+            if(table[i][j]!=EMPTY)
+                k++;
+            if(k>2){
+                break;
+            } 
+        } 
+    }
+    return (k<2 ? true:false);
+}
+
+
+bool checkMove(int x1, int x2){
+if((x1==SCISSORS && x2==PAPER) || 
+    (x1==PAPER && x2==ROCK) ||
+    (x1==ROCK && x2==SCISSORS))
+        return true;
+    else 
+        return false;
+}
