@@ -3,9 +3,10 @@
 
 using namespace std;
 
+std::vector<Movimento>caminho;
+game *teste;
 
 int main(int argc, char *argv[]){
     //game *teste=game::getInstance();
-    printf("%d \n", checkMove(PAPER, PAPER));
     return 0;
 }

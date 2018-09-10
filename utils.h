@@ -4,13 +4,10 @@
 #include <iostream>
 #include <vector>
 
-typedef struct moviment {
+typedef struct Movimento {
     int origem[2]; //x, y
     int destino[2]; //x, y
 } Movimento;
 
 std::vector<int> getLine();
-
-
-
 #endif

@@ -2,6 +2,9 @@
 //using namespace std;
 
 game* game::instance=0;
+extern game *teste;
+extern std::vector<Movimento>caminho;
+
 game* game::getInstance(){
     if(instance==0)
         instance=new game();
@@ -44,6 +47,15 @@ void game::printGame(){
     }
 };
 
+Movimento game::checkMove(int x, int y){
+    Movimento rt;
+    rt.origem[0]=x;
+    rt.origem[1]=y;
+    
+    //Check each coordinate to move
+    
+}
+
 
 bool checkWin(std::vector<std::vector<int>> table, int row, int column){
     int i, j, k=0;
@@ -61,11 +73,52 @@ bool checkWin(std::vector<std::vector<int>> table, int row, int column){
 }
 
 
-bool checkMove(int x1, int x2){
-if((x1==SCISSORS && x2==PAPER) || 
-    (x1==PAPER && x2==ROCK) ||
-    (x1==ROCK && x2==SCISSORS))
+bool checkJanken(int x1, int x2){
+if( (x1!=EMPTY && (x2!=EMPTY)) &&
+    (   (x1==SCISSORS && x2==PAPER) || 
+        (x1==PAPER && x2==ROCK) ||
+        (x1==ROCK && x2==SCISSORS)))
+  
         return true;
     else 
         return false;
 }
+
+
+bool BruteCheckR(int x, int y){
+    Movimento assignment;
+    assignment.origem[0]=x;
+    assignment.origem[1]=y;
+    
+    //caso estiver numa situação de fim.
+    //A jogada completa estará no vetor caminho,
+    //que será limpo na função externa a recursão.
+    if(checkWin(teste->table, teste->rows, teste->columns))
+        return true;
+
+    //checar movimentos possíveis
+    //p/ cada movimento possível
+    //caminho.push_back();
+    //if(BruteCheckR(novo x, novo y))
+        //return true - todas as jogadas no caminho.
+    //else
+        //pop resultado do caminho
+    
+        
+        
+    //return false;
+    
+    
+}
+
+
+void BruteCheck(game *teste){
+    int i, j;
+    for(i=0;i<teste->rows;i++){
+        for(j=0;j<teste->columns; j++)
+            if(teste->table[i][j]!=EMPTY)
+               BruteCheckR(i, j);
+    }
+}
+
+

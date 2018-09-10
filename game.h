@@ -27,16 +27,17 @@ class game{
 
         //Atributes
         std::vector<std::vector<int>> table;
-        int rows, columns;
+        int rows, columns, possibilities;
 
         //Methods
         static game *getInstance();
         ~game();
         void printGame();
+        Movimento checkMove(int x, int y);
 
 };
 
 bool checkWin(std::vector<std::vector<int>> table, int row, int column);
 #endif
 
-bool checkMove(int x1, int x2);
+bool checkJanken(int x1, int x2);
