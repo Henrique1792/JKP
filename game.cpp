@@ -56,49 +56,69 @@ Movimento **checkMove(int x, int y){
     //left
     if((y+1)<teste->columns){
         if(checkJanken(teste->table[x][y], teste->table[x][y+1])){
-            rt=(Movimento **)realloc(rt, (i+2)*sizeof(Movimento *));
+            rt=(Movimento **)realloc(rt, (i+1)*sizeof(Movimento *));
             rt[i]->origem[0]=x;
             rt[i]->origem[1]=y;
             rt[i]->destino[0]=x;
             rt[i]->destino[1]=y+1;
-            rt[i+1]->origem[0]=x;
-            rt[i+1]->origem[1]=y+1;
-            rt[i+1]->destino[0]=x;
-            rt[i+1]->destino[1]=y;
-            i+=2;
-        } 
+            i++;
+        }
+        else{
+            if(checkJanken(teste->table[x][y+1], teste->table[x][y])){
+                rt=(Movimento **)realloc(rt, (i+1)*sizeof(Movimento *));
+                rt[i]->origem[0]=x;
+                rt[i]->origem[1]=y+1;
+                rt[i]->destino[0]=x;
+                rt[i]->destino[1]=y;
+                i++;
+            }
+        }
     }    
     
     //right
     if((y-1)>0){
         if(checkJanken(teste->table[x][y], teste->table[x][y-1])){
-            rt=(Movimento **)realloc(rt, (i+2)*sizeof(Movimento *));
+            rt=(Movimento **)realloc(rt, (i+1)*sizeof(Movimento *));
             rt[i]->origem[0]=x;
             rt[i]->origem[1]=y;
             rt[i]->destino[0]=x;
             rt[i]->destino[1]=y-1;
-            rt[i+1]->origem[0]=x;
-            rt[i+1]->origem[1]=y-1;
-            rt[i+1]->destino[0]=x;
-            rt[i+1]->destino[1]=y;
-            i+=2;
+            i++;
         } 
+        else{
+            if(checkJanken(teste->table[x][y-1], teste->table[x][y])){
+                rt=(Movimento **)realloc(rt, (i+1)*sizeof(Movimento *));
+                rt[i]->origem[0]=x;
+                rt[i]->origem[1]=y-1;
+                rt[i]->destino[0]=x;
+                rt[i]->destino[1]=y;
+                i++;
+            } 
+        }
     }    
+    
     //up
     if((x-1)>0){
         if(checkJanken(teste->table[x][y], teste->table[x-1][y])){
-            rt=(Movimento **)realloc(rt, (i+2)*sizeof(Movimento *));
+            rt=(Movimento **)realloc(rt, (i+1)*sizeof(Movimento *));
             rt[i]->origem[0]=x;
             rt[i]->origem[1]=y;
             rt[i]->destino[0]=x-1;
             rt[i]->destino[1]=y;
-            rt[i+1]->origem[0]=x-1;
-            rt[i+1]->origem[1]=y;
-            rt[i+1]->destino[0]=x;
-            rt[i+1]->destino[1]=y;
-            i+=2;
+            i++;
         } 
+        else{
+            if(checkJanken(teste->table[x-1][y], teste->table[x][y])){
+                rt=(Movimento **)realloc(rt, (i+1)*sizeof(Movimento *));
+                rt[i]->origem[0]=x-1;
+                rt[i]->origem[1]=y;
+                rt[i]->destino[0]=x;
+                rt[i]->destino[1]=y;
+                i++;
+            } 
+        }
     }    
+
     //down
     if((x+1)<teste->rows){
         if(checkJanken(teste->table[x][y], teste->table[x+1][y])){
@@ -107,13 +127,19 @@ Movimento **checkMove(int x, int y){
             rt[i]->origem[1]=y;
             rt[i]->destino[0]=x+1;
             rt[i]->destino[1]=y;
-            rt[i+1]->origem[0]=x+1;
-            rt[i+1]->origem[1]=y;
-            rt[i+1]->destino[0]=x;
-            rt[i+1]->destino[1]=y;
-            i+=2;
+            i++;
         } 
-
+        else{
+        
+            if(checkJanken(teste->table[x+1][y], teste->table[x][y])){
+                rt=(Movimento **)realloc(rt, (i+1)*sizeof(Movimento *));
+                rt[i]->origem[0]=x+1;
+                rt[i]->origem[1]=y;
+                rt[i]->destino[0]=x;
+                rt[i]->destino[1]=y;
+                i++;
+            } 
+        }
     }    
 
     return rt;
