@@ -19,3 +19,13 @@ std::vector<int> getLine(){
 }
 
 
+
+Movimento *newMovimento(){
+    Movimento *rt=(Movimento *)malloc(sizeof(Movimento));
+    return rt;
+}
+
+
+void freeMovimento(Movimento *tgt){
+    free(tgt);
+}

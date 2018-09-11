@@ -33,11 +33,12 @@ class game{
         static game *getInstance();
         ~game();
         void printGame();
-        Movimento checkMove(int x, int y);
 
 };
 
 bool checkWin(std::vector<std::vector<int>> table, int row, int column);
-#endif
 
+Movimento **checkMove(int x, int y);
 bool checkJanken(int x1, int x2);
+
+#endif

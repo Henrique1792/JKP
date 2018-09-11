@@ -47,13 +47,76 @@ void game::printGame(){
     }
 };
 
-Movimento game::checkMove(int x, int y){
-    Movimento rt;
-    rt.origem[0]=x;
-    rt.origem[1]=y;
+
+Movimento **checkMove(int x, int y){
+    Movimento **rt;    
+    int i=0;
+    //Check each possible move
+
+    //left
+    if((y+1)<teste->columns){
+        if(checkJanken(teste->table[x][y], teste->table[x][y+1])){
+            rt=(Movimento **)realloc(rt, (i+2)*sizeof(Movimento *));
+            rt[i]->origem[0]=x;
+            rt[i]->origem[1]=y;
+            rt[i]->destino[0]=x;
+            rt[i]->destino[1]=y+1;
+            rt[i+1]->origem[0]=x;
+            rt[i+1]->origem[1]=y+1;
+            rt[i+1]->destino[0]=x;
+            rt[i+1]->destino[1]=y;
+            i+=2;
+        } 
+    }    
     
-    //Check each coordinate to move
-    
+    //right
+    if((y-1)>0){
+        if(checkJanken(teste->table[x][y], teste->table[x][y-1])){
+            rt=(Movimento **)realloc(rt, (i+2)*sizeof(Movimento *));
+            rt[i]->origem[0]=x;
+            rt[i]->origem[1]=y;
+            rt[i]->destino[0]=x;
+            rt[i]->destino[1]=y-1;
+            rt[i+1]->origem[0]=x;
+            rt[i+1]->origem[1]=y-1;
+            rt[i+1]->destino[0]=x;
+            rt[i+1]->destino[1]=y;
+            i+=2;
+        } 
+    }    
+    //up
+    if((x-1)>0){
+        if(checkJanken(teste->table[x][y], teste->table[x-1][y])){
+            rt=(Movimento **)realloc(rt, (i+2)*sizeof(Movimento *));
+            rt[i]->origem[0]=x;
+            rt[i]->origem[1]=y;
+            rt[i]->destino[0]=x-1;
+            rt[i]->destino[1]=y;
+            rt[i+1]->origem[0]=x-1;
+            rt[i+1]->origem[1]=y;
+            rt[i+1]->destino[0]=x;
+            rt[i+1]->destino[1]=y;
+            i+=2;
+        } 
+    }    
+    //down
+    if((x+1)<teste->rows){
+        if(checkJanken(teste->table[x][y], teste->table[x+1][y])){
+            rt=(Movimento **)realloc(rt, (i+2)*sizeof(Movimento *));
+            rt[i]->origem[0]=x;
+            rt[i]->origem[1]=y;
+            rt[i]->destino[0]=x+1;
+            rt[i]->destino[1]=y;
+            rt[i+1]->origem[0]=x+1;
+            rt[i+1]->origem[1]=y;
+            rt[i+1]->destino[0]=x;
+            rt[i+1]->destino[1]=y;
+            i+=2;
+        } 
+
+    }    
+
+    return rt;
 }
 
 
@@ -86,9 +149,6 @@ if( (x1!=EMPTY && (x2!=EMPTY)) &&
 
 
 bool BruteCheckR(int x, int y){
-    Movimento assignment;
-    assignment.origem[0]=x;
-    assignment.origem[1]=y;
     
     //caso estiver numa situação de fim.
     //A jogada completa estará no vetor caminho,
@@ -96,7 +156,8 @@ bool BruteCheckR(int x, int y){
     if(checkWin(teste->table, teste->rows, teste->columns))
         return true;
 
-    //checar movimentos possíveis
+    //checar todos os movimentos possíveis!
+    Movimento **assignment=checkMove(x, y);
     //p/ cada movimento possível
     //caminho.push_back();
     //if(BruteCheckR(novo x, novo y))

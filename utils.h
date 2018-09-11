@@ -10,4 +10,6 @@ typedef struct Movimento {
 } Movimento;
 
 std::vector<int> getLine();
+Movimento *newMovimento();
+void freeMovimento(Movimento *tgt);
 #endif
