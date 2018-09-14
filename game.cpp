@@ -48,7 +48,7 @@ void game::printGame(){
 };
 
 
-Movimento **checkMove(int x, int y){
+Movimento **checkMove(int x, int y, int *nMoves){
     Movimento **rt;    
     int i=0;
     //Check each possible move
@@ -74,7 +74,7 @@ Movimento **checkMove(int x, int y){
             }
         }
     }    
-    
+
     //right
     if((y-1)>0){
         if(checkJanken(teste->table[x][y], teste->table[x][y-1])){
@@ -96,7 +96,7 @@ Movimento **checkMove(int x, int y){
             } 
         }
     }    
-    
+
     //up
     if((x-1)>0){
         if(checkJanken(teste->table[x][y], teste->table[x-1][y])){
@@ -130,7 +130,7 @@ Movimento **checkMove(int x, int y){
             i++;
         } 
         else{
-        
+
             if(checkJanken(teste->table[x+1][y], teste->table[x][y])){
                 rt=(Movimento **)realloc(rt, (i+1)*sizeof(Movimento *));
                 rt[i]->origem[0]=x+1;
@@ -141,7 +141,7 @@ Movimento **checkMove(int x, int y){
             } 
         }
     }    
-
+    *nMoves=i;
     return rt;
 }
 
@@ -163,11 +163,11 @@ bool checkWin(std::vector<std::vector<int>> table, int row, int column){
 
 
 bool checkJanken(int x1, int x2){
-if( (x1!=EMPTY && (x2!=EMPTY)) &&
-    (   (x1==SCISSORS && x2==PAPER) || 
-        (x1==PAPER && x2==ROCK) ||
-        (x1==ROCK && x2==SCISSORS)))
-  
+    if( (x1!=EMPTY && (x2!=EMPTY)) &&
+            (   (x1==SCISSORS && x2==PAPER) || 
+                (x1==PAPER && x2==ROCK) ||
+                (x1==ROCK && x2==SCISSORS)))
+
         return true;
     else 
         return false;
@@ -175,7 +175,8 @@ if( (x1!=EMPTY && (x2!=EMPTY)) &&
 
 
 bool BruteCheckR(int x, int y){
-    
+    int nMoves=0; 
+    int i;
     //caso estiver numa situação de fim.
     //A jogada completa estará no vetor caminho,
     //que será limpo na função externa a recursão.
@@ -183,19 +184,18 @@ bool BruteCheckR(int x, int y){
         return true;
 
     //checar todos os movimentos possíveis!
-    Movimento **assignment=checkMove(x, y);
+    Movimento **assignment=checkMove(x, y, &nMoves);
+    //nenhum movimento é possível desta peça
+    if(assignment==NULL)
+        return false;
     //p/ cada movimento possível
-    //caminho.push_back();
-    //if(BruteCheckR(novo x, novo y))
-        //return true - todas as jogadas no caminho.
-    //else
-        //pop resultado do caminho
-    
-        
-        
-    //return false;
-    
-    
+    for(i=0; i < nMoves; i++){
+        caminho.push_back(*assignment[i]);
+        if(BruteCheckR(assignment[i]->destino[0], assignment[i]->destino[1]))
+            //win output here
+        caminho.pop_back();
+    }
+    return false;
 }
 
 
@@ -204,7 +204,7 @@ void BruteCheck(game *teste){
     for(i=0;i<teste->rows;i++){
         for(j=0;j<teste->columns; j++)
             if(teste->table[i][j]!=EMPTY)
-               BruteCheckR(i, j);
+                BruteCheckR(i, j);
     }
 }
 
