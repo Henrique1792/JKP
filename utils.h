@@ -7,6 +7,8 @@
 typedef struct Movimento {
     int origem[2]; //x, y
     int destino[2]; //x, y
+    int jankenO;
+    int jankenP;
 } Movimento;
 
 std::vector<int> getLine();

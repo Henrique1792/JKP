@@ -1,6 +1,7 @@
 #ifndef GAME_H_
 #define GAME_H_
 
+#include <map>
 #include <vector>
 #include "game.h"
 #include "utils.h"
@@ -11,10 +12,7 @@
 #define SCISSORS 2
 #define PAPER 3
 
-/*
- * JANKEN rules
- * check legal movement from x1 to x2 due to janken
- */
+
 
 class game{
     //Scope
@@ -37,8 +35,8 @@ class game{
 };
 
 bool checkWin(std::vector<std::vector<int>> table, int row, int column);
-
-Movimento **checkMove(int x, int y);
+void BruteCheck();
+Movimento *checkMove(int x, int y);
 bool checkJanken(int x1, int x2);
 
 #endif
