@@ -24,7 +24,7 @@ class game{
     public:
 
         //Atributes
-        std::vector<std::vector<int>> table;
+        std::vector<std::vector<int> > table;
         int rows, columns, possibilities;
 
         //Methods
@@ -34,9 +34,9 @@ class game{
 
 };
 
-bool checkWin(std::vector<std::vector<int>> table, int row, int column);
+bool checkWin(std::vector<std::vector<int> > table, int row, int column);
 void BruteCheck();
-Movimento *checkMove(int x, int y);
+Movimento *checkMove(int *nMoves);
 bool checkJanken(int x1, int x2);
 
 #endif

@@ -14,8 +14,8 @@ int main(int argc, char *argv[]){
 
     for(iter=estadoF.begin(); iter!=estadoF.end(); iter++){
         printf("%d \n", iter->first);
-        printf("%d %d %d\n", iter->second.destino[0],
-                             iter->second.destino[1],
+        printf("%d %d %d\n", iter->second.origem[0],
+                             iter->second.origem[1],
                              iter->second.jankenP);
     }
 

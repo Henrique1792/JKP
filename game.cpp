@@ -49,111 +49,111 @@ void game::printGame(){
 };
 
 
-Movimento *checkMove(int x, int y, int *nMoves){
-    Movimento *rt=NULL;    
+Movimento *checkMove(int *nMoves){
+    Movimento *rt=NULL;    // vetor
     int i, j, Moves=0;
     //Check each possible move
     for(i=0;i<teste->rows; i++){
         for(j=0; j<teste->columns; j++){
             if(teste->table[i][j]==EMPTY) continue;
         //left
-            if((y+1)<teste->columns){
-                if(checkJanken(teste->table[x][y], teste->table[x][y+1])){
+            if((j+1)<teste->columns){
+                if(checkJanken(teste->table[i][j], teste->table[i][j+1])){
                     rt=(Movimento *)realloc(rt, (Moves+1)*sizeof(Movimento ));
-                    rt[Moves].origem[0]=x;
-                    rt[Moves].origem[1]=y;
-                    rt[Moves].destino[0]=x;
-                    rt[Moves].destino[1]=y+1;
-                    rt[Moves].jankenO=teste->table[x][y];
-                    rt[Moves].jankenP=teste->table[x][y+1];
+                    rt[Moves].origem[0]=i;
+                    rt[Moves].origem[1]=j;
+                    rt[Moves].destino[0]=i;
+                    rt[Moves].destino[1]=j+1;
+                    rt[Moves].jankenO=teste->table[i][j];
+                    rt[Moves].jankenP=teste->table[i][j+1];
                     Moves++;
                 }
                 else{
-                    if(checkJanken(teste->table[x][y+1], teste->table[x][y])){
+                    if(checkJanken(teste->table[i][j+1], teste->table[i][j])){
                         rt=(Movimento *)realloc(rt, (Moves+1)*sizeof(Movimento));
-                        rt[Moves].origem[0]=x;
-                        rt[Moves].origem[1]=y+1;
-                        rt[Moves].destino[0]=x;
-                        rt[Moves].destino[1]=y;
-                        rt[Moves].jankenO=teste->table[x][y+1];
-                        rt[Moves].jankenP=teste->table[x][y];
+                        rt[Moves].origem[0]=i;
+                        rt[Moves].origem[1]=j+1;
+                        rt[Moves].destino[0]=i;
+                        rt[Moves].destino[1]=j;
+                        rt[Moves].jankenO=teste->table[i][j+1];
+                        rt[Moves].jankenP=teste->table[i][j];
                         Moves++;
                     }
                 }
             }    
         //right
-            if((y-1)>0){
-                if(checkJanken(teste->table[x][y], teste->table[x][y-1])){
+            if((j-1)>0){
+                if(checkJanken(teste->table[i][j], teste->table[i][j-1])){
                     rt=(Movimento *)realloc(rt, (Moves+1)*sizeof(Movimento ));
-                    rt[Moves].origem[0]=x;
-                    rt[Moves].origem[1]=y;
-                    rt[Moves].destino[0]=x;
-                    rt[Moves].destino[1]=y-1;
-                    rt[Moves].jankenO=teste->table[x][y];
-                    rt[Moves].jankenP=teste->table[x][y-1];
+                    rt[Moves].origem[0]=i;
+                    rt[Moves].origem[1]=j;
+                    rt[Moves].destino[0]=i;
+                    rt[Moves].destino[1]=j-1;
+                    rt[Moves].jankenO=teste->table[i][j];
+                    rt[Moves].jankenP=teste->table[i][j-1];
                     Moves++;
                 } 
                 else{
-                    if(checkJanken(teste->table[x][y-1], teste->table[x][y])){
+                    if(checkJanken(teste->table[i][j-1], teste->table[i][j])){
                         rt=(Movimento *)realloc(rt, (Moves+1)*sizeof(Movimento ));
-                        rt[Moves].origem[0]=x;
-                        rt[Moves].origem[1]=y-1;
-                        rt[Moves].destino[0]=x;
-                        rt[Moves].destino[1]=y;
-                        rt[Moves].jankenO=teste->table[x][y-1];
-                        rt[Moves].jankenP=teste->table[x][y];
+                        rt[Moves].origem[0]=i;
+                        rt[Moves].origem[1]=j-1;
+                        rt[Moves].destino[0]=i;
+                        rt[Moves].destino[1]=j;
+                        rt[Moves].jankenO=teste->table[i][j-1];
+                        rt[Moves].jankenP=teste->table[i][j];
                         Moves++;
                     } 
                 }
             }    
 
         //up
-            if((x-1)>0){
-                if(checkJanken(teste->table[x][y], teste->table[x-1][y])){
+            if((i)>0){
+                if(checkJanken(teste->table[i][j], teste->table[i-1][j])){
                     rt=(Movimento *)realloc(rt, (Moves+1)*sizeof(Movimento));
-                    rt[Moves].origem[0]=x;
-                    rt[Moves].origem[1]=y;
-                    rt[Moves].destino[0]=x-1;
-                    rt[Moves].destino[1]=y;
-                    rt[Moves].jankenO=teste->table[x][y];
-                    rt[Moves].jankenP=teste->table[x-1][y];
+                    rt[Moves].origem[0]=i;
+                    rt[Moves].origem[1]=j;
+                    rt[Moves].destino[0]=i;
+                    rt[Moves].destino[1]=j;
+                    rt[Moves].jankenO=teste->table[i][j];
+                    rt[Moves].jankenP=teste->table[i][j];
                     Moves++;
                 } 
                 else{
-                    if(checkJanken(teste->table[x-1][y], teste->table[x][y])){
+                    if(checkJanken(teste->table[i][j], teste->table[i][j])){
                         rt=(Movimento *)realloc(rt, (Moves+1)*sizeof(Movimento));
-                        rt[Moves].origem[0]=x-1;
-                        rt[Moves].origem[1]=y;
-                        rt[Moves].destino[0]=x;
-                        rt[Moves].destino[1]=y;
-                        rt[Moves].jankenO=teste->table[x-1][y];
-                        rt[Moves].jankenP=teste->table[x][y];
+                        rt[Moves].origem[0]=i;
+                        rt[Moves].origem[1]=j;
+                        rt[Moves].destino[0]=i;
+                        rt[Moves].destino[1]=j;
+                        rt[Moves].jankenO=teste->table[i][j];
+                        rt[Moves].jankenP=teste->table[i][j];
                         Moves++;
                     } 
                 }
             }    
 
         //down
-            if((x+1)<teste->rows){
-                if(checkJanken(teste->table[x][y], teste->table[x+1][y])){
+            if((i+1)<teste->rows){
+                if(checkJanken(teste->table[i][j], teste->table[i+1][j])){
                     rt=(Movimento *)realloc(rt, (Moves+1)*sizeof(Movimento ));
-                    rt[Moves].origem[0]=x;
-                    rt[Moves].origem[1]=y;
-                    rt[Moves].destino[0]=x+1;
-                    rt[Moves].destino[1]=y;
-                    rt[Moves].jankenO=teste->table[x][y];
-                    rt[Moves].jankenP=teste->table[x+1][y];
+                    rt[Moves].origem[0]=i;
+                    rt[Moves].origem[1]=j;
+                    rt[Moves].destino[0]=i+1;
+                    rt[Moves].destino[1]=j;
+                    rt[Moves].jankenO=teste->table[i][j];
+                    rt[Moves].jankenP=teste->table[i+1][j];
                     Moves++;
                 } 
                 else{
-                    if(checkJanken(teste->table[x+1][y], teste->table[x][y])){
+                    if(checkJanken(teste->table[i+1][j], teste->table[i][j])){
                         rt=(Movimento *)realloc(rt, (Moves+1)*sizeof(Movimento ));
-                        rt[Moves].origem[0]=x+1;
-                        rt[Moves].origem[1]=y;
-                        rt[Moves].destino[0]=x;
-                        rt[Moves].destino[1]=y;
-                        rt[Moves].jankenO=teste->table[x+1][y];
-                        rt[Moves].jankenP=teste->table[x][y];
+                        rt[Moves].origem[0]=i+1;
+                        rt[Moves].origem[1]=j;
+                        rt[Moves].destino[0]=i;
+                        rt[Moves].destino[1]=j;
+                        rt[Moves].jankenO=teste->table[i+1][j];
+                        rt[Moves].jankenP=teste->table[i][j];
                         Moves++;
                     } 
                 }
@@ -165,7 +165,7 @@ Movimento *checkMove(int x, int y, int *nMoves){
 }
 
 
-bool checkWin(std::vector<std::vector<int>> table, int row, int column){
+bool checkWin(std::vector<std::vector<int> > table, int row, int column){
     int i, j, k=0;
 
     for(i=0;i<row;i++){
@@ -204,7 +204,7 @@ bool BruteCheckR(int x, int y){
         return true;
 
     //checar todos os movimentos possíveis!
-    Movimento *assignment=checkMove(x, y, &nMoves);
+    Movimento *assignment=checkMove(&nMoves);
     //nenhum movimento é possível desta peça
     if(assignment==NULL)
         return false;
@@ -215,7 +215,7 @@ bool BruteCheckR(int x, int y){
         teste->table[(assignment[i]).origem[0]][(assignment[i]).origem[1]]=EMPTY;
             if(BruteCheckR(assignment[i].destino[0], assignment[i].destino[1])){
             //estado final distinto aqui
-            estadoF.insert({assignment[i].jankenO,assignment[i]});
+            estadoF.insert(std::make_pair(assignment[i].jankenO, assignment[i]));
         }
         teste->table[(assignment[i]).origem[0]][(assignment[i]).origem[1]]=assignment[i].jankenO;
         teste->table[(assignment[i]).destino[0]][(assignment[i]).destino[1]]=assignment[i].jankenP;      
