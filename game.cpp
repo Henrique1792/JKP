@@ -153,8 +153,10 @@ bool BruteCheckR(int x, int y){
     //caso estiver numa situação de fim.
     //A jogada completa estará no vetor caminho,
     //que será limpo na função externa a recursão.
-    if(checkWin(teste->table, teste->rows, teste->columns))
+    if(checkWin(teste->table, teste->rows, teste->columns)){
+        printf("banana\n");
         return true;
+    }
 
     //checar todos os movimentos possíveis!
     Movimento *assignment=checkMove(&nMoves);
@@ -164,21 +166,41 @@ bool BruteCheckR(int x, int y){
                                                         , assignment[i].destino[0],assignment[i].destino[1], assignment[i].jankenP); */
     
     //nenhum movimento é possível desta peça
-    if(assignment==NULL)
+    if(assignment==NULL){
+        printf("maça\n");
         return false;
-    //p/ cada movimento possível
+    }
+
+    // p/ cada movimento possível
     for(i=0; i < nMoves; i++){
         caminho.push_back(assignment[i]);
-        teste->table[(assignment[i]).origem[0]][(assignment[i]).origem[1]]=teste->table[(assignment[i]).destino[0]][(assignment[i]).destino[1]];      
-        teste->table[(assignment[i]).origem[0]][(assignment[i]).origem[1]]=EMPTY;
-            if(BruteCheckR(assignment[i].destino[0], assignment[i].destino[1])){
+
+        //Mover a peça. Destino recebe o valor de origem e origem vai ficar vazia
+        teste->table[(assignment[i]).destino[0]][(assignment[i]).destino[1]] = assignment[i].jankenO;      
+        teste->table[(assignment[i]).origem[0]][(assignment[i]).origem[1]] = EMPTY;
+
+        //printf("IIIIIII %d IDA\n", i);
+        //printf("Origem original: %d\n", assignment[i].jankenO);
+        //printf("Destino original: %d\n", assignment[i].jankenP);     
+
+        if(BruteCheckR(assignment[i].destino[0], assignment[i].destino[1])){
+            printf("FINISH LINE AOBA \n");
             //estado final distinto aqui
             estadoF.insert(std::make_pair(assignment[i].jankenO, assignment[i]));
         }
-        teste->table[(assignment[i]).origem[0]][(assignment[i]).origem[1]]=assignment[i].jankenO;
-        teste->table[(assignment[i]).destino[0]][(assignment[i]).destino[1]]=assignment[i].jankenP;      
+
+        //Desfazer movimento. O destino e origem recebem valor anterior
+        teste->table[(assignment[i]).origem[0]][(assignment[i]).origem[1]] = assignment[i].jankenO;
+        teste->table[(assignment[i]).destino[0]][(assignment[i]).destino[1]] = assignment[i].jankenP;   
+
+        //printf("IIIIIII %d VOLTA\n", i);
+        //printf("ORIGEM VOLTA %d\n", teste->table[(assignment[i]).destino[0]][(assignment[i]).destino[1]]);
+        //printf("DESTINO VOLTA %d\n", teste->table[(assignment[i]).origem[0]][(assignment[i]).origem[1]]);
+           
+        
         caminho.pop_back();
     }
+
     //para evitar vazamento de memória:
     freeMovimento(assignment);
     return false;
