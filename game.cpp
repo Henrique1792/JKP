@@ -55,8 +55,9 @@ Movimento *checkMove(int *nMoves){
     //Check each possible move
     for(i=0;i<teste->rows; i++){
         for(j=0; j<teste->columns; j++){
+            //printf("peça sendo testada: %d, %d\n", i, j);
             if(teste->table[i][j]==EMPTY) continue;
-        //left
+            //left
             if((j+1)<teste->columns){
                 if(checkJanken(teste->table[i][j], teste->table[i][j+1])){
                     rt=(Movimento *)realloc(rt, (Moves+1)*sizeof(Movimento ));
@@ -68,20 +69,8 @@ Movimento *checkMove(int *nMoves){
                     rt[Moves].jankenP=teste->table[i][j+1];
                     Moves++;
                 }
-                else{
-                    if(checkJanken(teste->table[i][j+1], teste->table[i][j])){
-                        rt=(Movimento *)realloc(rt, (Moves+1)*sizeof(Movimento));
-                        rt[Moves].origem[0]=i;
-                        rt[Moves].origem[1]=j+1;
-                        rt[Moves].destino[0]=i;
-                        rt[Moves].destino[1]=j;
-                        rt[Moves].jankenO=teste->table[i][j+1];
-                        rt[Moves].jankenP=teste->table[i][j];
-                        Moves++;
-                    }
-                }
             }    
-        //right
+            //right
             if((j-1)>0){
                 if(checkJanken(teste->table[i][j], teste->table[i][j-1])){
                     rt=(Movimento *)realloc(rt, (Moves+1)*sizeof(Movimento ));
@@ -93,47 +82,23 @@ Movimento *checkMove(int *nMoves){
                     rt[Moves].jankenP=teste->table[i][j-1];
                     Moves++;
                 } 
-                else{
-                    if(checkJanken(teste->table[i][j-1], teste->table[i][j])){
-                        rt=(Movimento *)realloc(rt, (Moves+1)*sizeof(Movimento ));
-                        rt[Moves].origem[0]=i;
-                        rt[Moves].origem[1]=j-1;
-                        rt[Moves].destino[0]=i;
-                        rt[Moves].destino[1]=j;
-                        rt[Moves].jankenO=teste->table[i][j-1];
-                        rt[Moves].jankenP=teste->table[i][j];
-                        Moves++;
-                    } 
-                }
             }    
 
-        //up
+            //up
             if((i)>0){
                 if(checkJanken(teste->table[i][j], teste->table[i-1][j])){
                     rt=(Movimento *)realloc(rt, (Moves+1)*sizeof(Movimento));
                     rt[Moves].origem[0]=i;
                     rt[Moves].origem[1]=j;
-                    rt[Moves].destino[0]=i;
+                    rt[Moves].destino[0]=i - 1;
                     rt[Moves].destino[1]=j;
                     rt[Moves].jankenO=teste->table[i][j];
-                    rt[Moves].jankenP=teste->table[i][j];
+                    rt[Moves].jankenP=teste->table[i - 1][j];
                     Moves++;
                 } 
-                else{
-                    if(checkJanken(teste->table[i][j], teste->table[i][j])){
-                        rt=(Movimento *)realloc(rt, (Moves+1)*sizeof(Movimento));
-                        rt[Moves].origem[0]=i;
-                        rt[Moves].origem[1]=j;
-                        rt[Moves].destino[0]=i;
-                        rt[Moves].destino[1]=j;
-                        rt[Moves].jankenO=teste->table[i][j];
-                        rt[Moves].jankenP=teste->table[i][j];
-                        Moves++;
-                    } 
-                }
             }    
 
-        //down
+            //down
             if((i+1)<teste->rows){
                 if(checkJanken(teste->table[i][j], teste->table[i+1][j])){
                     rt=(Movimento *)realloc(rt, (Moves+1)*sizeof(Movimento ));
@@ -145,18 +110,6 @@ Movimento *checkMove(int *nMoves){
                     rt[Moves].jankenP=teste->table[i+1][j];
                     Moves++;
                 } 
-                else{
-                    if(checkJanken(teste->table[i+1][j], teste->table[i][j])){
-                        rt=(Movimento *)realloc(rt, (Moves+1)*sizeof(Movimento ));
-                        rt[Moves].origem[0]=i+1;
-                        rt[Moves].origem[1]=j;
-                        rt[Moves].destino[0]=i;
-                        rt[Moves].destino[1]=j;
-                        rt[Moves].jankenO=teste->table[i+1][j];
-                        rt[Moves].jankenP=teste->table[i][j];
-                        Moves++;
-                    } 
-                }
             }
         }
     }
@@ -182,7 +135,7 @@ bool checkWin(std::vector<std::vector<int> > table, int row, int column){
 
 
 bool checkJanken(int x1, int x2){
-    if( (x1!=EMPTY && (x2!=EMPTY)) &&
+    if( ( x1!=EMPTY && x2!=EMPTY ) &&
             (   (x1==SCISSORS && x2==PAPER) || 
                 (x1==PAPER && x2==ROCK) ||
                 (x1==ROCK && x2==SCISSORS)
@@ -205,6 +158,11 @@ bool BruteCheckR(int x, int y){
 
     //checar todos os movimentos possíveis!
     Movimento *assignment=checkMove(&nMoves);
+    
+    /*for(i=0; i <nMoves; i++)
+        printf("Origem: %d %d %d \t Destino %d %d %d \n", assignment[i].origem[0],assignment[i].origem[1], assignment[i].jankenO
+                                                        , assignment[i].destino[0],assignment[i].destino[1], assignment[i].jankenP); */
+    
     //nenhum movimento é possível desta peça
     if(assignment==NULL)
         return false;
