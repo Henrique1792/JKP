@@ -5,7 +5,7 @@
 game* game::instance=0;
 extern game *teste;
 extern std::vector<Movimento>caminho;
-extern std::multimap<int, Movimento> estadoF;
+extern std::map<int, Movimento> estadoF;
 game* game::getInstance(){
     if(instance==0)
         instance=new game();
@@ -39,7 +39,6 @@ game::~game(void){
 
 void game::printGame(){
     int i, j;
-    printf("rows: %d, columns: %d\n", this->rows, this->columns);
 
     for(i=0; i<this->rows;i++){
         for(j=0; j<this->columns; j++)
@@ -154,7 +153,7 @@ bool BruteCheckR(int x, int y){
     //A jogada completa estará no vetor caminho,
     //que será limpo na função externa a recursão.
     if(checkWin(teste->table, teste->rows, teste->columns)){
-        printf("banana\n");
+       // printf("banana\n");
         return true;
     }
 
@@ -167,24 +166,24 @@ bool BruteCheckR(int x, int y){
     
     //nenhum movimento é possível desta peça
     if(assignment==NULL){
-        printf("maça\n");
+        //printf("maça\n");
         return false;
     }
 
     // p/ cada movimento possível
     for(i=0; i < nMoves; i++){
         caminho.push_back(assignment[i]);
-
         //Mover a peça. Destino recebe o valor de origem e origem vai ficar vazia
         teste->table[(assignment[i]).destino[0]][(assignment[i]).destino[1]] = assignment[i].jankenO;      
         teste->table[(assignment[i]).origem[0]][(assignment[i]).origem[1]] = EMPTY;
 
-        //printf("IIIIIII %d IDA\n", i);
+        printf("IIIIIII %d IDA\n", i);
         //printf("Origem original: %d\n", assignment[i].jankenO);
         //printf("Destino original: %d\n", assignment[i].jankenP);     
+        teste->printGame();
 
         if(BruteCheckR(assignment[i].destino[0], assignment[i].destino[1])){
-            printf("FINISH LINE AOBA \n");
+        //    printf("FINISH LINE AOBA \n");
             //estado final distinto aqui
             estadoF.insert(std::make_pair(assignment[i].jankenO, assignment[i]));
         }
@@ -193,8 +192,11 @@ bool BruteCheckR(int x, int y){
         teste->table[(assignment[i]).origem[0]][(assignment[i]).origem[1]] = assignment[i].jankenO;
         teste->table[(assignment[i]).destino[0]][(assignment[i]).destino[1]] = assignment[i].jankenP;   
 
-        //printf("IIIIIII %d VOLTA\n", i);
+        printf("IIIIIII %d VOLTA\n", i);
+
+        teste->printGame();
         //printf("ORIGEM VOLTA %d\n", teste->table[(assignment[i]).destino[0]][(assignment[i]).destino[1]]);
+
         //printf("DESTINO VOLTA %d\n", teste->table[(assignment[i]).origem[0]][(assignment[i]).origem[1]]);
            
         
@@ -208,12 +210,7 @@ bool BruteCheckR(int x, int y){
 
 
 void BruteCheck(){
-    int i, j;
-    for(i=0;i<teste->rows;i++){
-        for(j=0;j<teste->columns; j++)
-            if(teste->table[i][j]!=EMPTY)
-                BruteCheckR(i, j);
-    }
+    BruteCheckR(0, 0);
 }
 
 
