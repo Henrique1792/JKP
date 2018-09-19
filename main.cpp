@@ -12,8 +12,8 @@ int main(int argc, char *argv[]){
     BruteCheck();
     std::map<int, Movimento>::iterator iter;
     cout << "MapSize: "<< estadoF.size() << endl;
+    printf("number of results: %d\n", teste->possibilities);
     for(iter=estadoF.begin(); iter!=estadoF.end(); iter++){
-        printf("%d \n", iter->first);
         printf("%d %d %d\n", iter->second.destino[0],
                              iter->second.destino[1],
                              iter->second.jankenO);

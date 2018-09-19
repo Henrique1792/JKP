@@ -70,7 +70,7 @@ Movimento *checkMove(int *nMoves){
                 }
             }    
             //right
-            if((j-1)>0){
+            if((j-1)>=0){
                 if(checkJanken(teste->table[i][j], teste->table[i][j-1])){
                     rt=(Movimento *)realloc(rt, (Moves+1)*sizeof(Movimento ));
                     rt[Moves].origem[0]=i;
@@ -84,8 +84,9 @@ Movimento *checkMove(int *nMoves){
             }    
 
             //up
-            if((i)>0){
+            if(i-1>=0){
                 if(checkJanken(teste->table[i][j], teste->table[i-1][j])){
+                    printf("TRACKING UP MOVE\n");
                     rt=(Movimento *)realloc(rt, (Moves+1)*sizeof(Movimento));
                     rt[Moves].origem[0]=i;
                     rt[Moves].origem[1]=j;
@@ -172,12 +173,12 @@ bool BruteCheckR(int x, int y){
 
     // p/ cada movimento possível
     for(i=0; i < nMoves; i++){
-        caminho.push_back(assignment[i]);
         //Mover a peça. Destino recebe o valor de origem e origem vai ficar vazia
         teste->table[(assignment[i]).destino[0]][(assignment[i]).destino[1]] = assignment[i].jankenO;      
         teste->table[(assignment[i]).origem[0]][(assignment[i]).origem[1]] = EMPTY;
 
-        printf("IIIIIII %d IDA\n", i);
+        printf("IIIIIII %d IDA \n", i);
+        printf("Origem: %d \t Destino: %d \n", assignment[i].jankenO, assignment[i].jankenP);
         //printf("Origem original: %d\n", assignment[i].jankenO);
         //printf("Destino original: %d\n", assignment[i].jankenP);     
         teste->printGame();
@@ -185,6 +186,7 @@ bool BruteCheckR(int x, int y){
         if(BruteCheckR(assignment[i].destino[0], assignment[i].destino[1])){
         //    printf("FINISH LINE AOBA \n");
             //estado final distinto aqui
+            teste->possibilities++;
             estadoF.insert(std::make_pair(assignment[i].jankenO, assignment[i]));
         }
 
@@ -200,7 +202,6 @@ bool BruteCheckR(int x, int y){
         //printf("DESTINO VOLTA %d\n", teste->table[(assignment[i]).origem[0]][(assignment[i]).origem[1]]);
            
         
-        caminho.pop_back();
     }
 
     //para evitar vazamento de memória:
