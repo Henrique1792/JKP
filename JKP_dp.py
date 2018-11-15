@@ -41,14 +41,36 @@ class Game:
     def printSolution(self)  """ 
 
     def DFS(self, i, j, visited):
-           visited[i][j]=True
+       visited[i][j]=True
 
-           #test right
-           if()
-           #test left
-           #test up
-           #test down
-
+       #test right
+       if(j-1>=0):
+           if(not visited[i][j-1] and self.board[i][j-1]):
+               DFS(i, j-1, visited)
+       #test left
+       elif(j+1<=self.columns):
+           if(not visited[i][j+1] and self.board[i][j-1]):
+               DFS(i, j+1, visited)
+       #test up
+       elif(i-1>=0):
+           if(not visited[i-1][j] and self.board[i][j-1]):
+               DFS(i-1, j, visited)
+       #test down
+       elif(i+1<=self.rows):
+           if(not visited[i+1][j] and self.board[i][j-1]):
+               DFS(i, j-1, visited)
+    
+    def islandCheck(self):
+        visited = [[False for j in range(self.columns)] for i in range(self.rows)] 
+        islands=0
+        for(i in range(self.rows)):
+            for(j in range(self.columns)):
+                if(visited[i][j]==False and self.board[i][j]!=0):
+                    DFS(i, j, visited)
+                    islands+=1
+                if(islands > 1):
+                    return False
+        return True
 
 
 
