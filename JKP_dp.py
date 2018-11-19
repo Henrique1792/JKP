@@ -1,10 +1,13 @@
-#Camila 8530952
-#Henrique 8937225
+#stenico_camila
+#8530952 camila
+#8937225 henrique
 
 import random
 from collections import OrderedDict
 
 #globals, don't touch (couldnt find anything as #define)
+check_janken = {1: [0, 1, 3], 2: [0, 1, 2], 3: [0, 2, 3]}
+
 EMPTY = 0
 ROCK = 1
 SCISSORS = 2
@@ -12,9 +15,6 @@ PAPER = 3
 
 posVizinhoLinha=[-1, 1, 0, 0]
 posVizinhoColuna=[0, 0, -1, +1]
-
-invalid_moves = {1: [0, 1, 3], 2: [0, 1, 2], 3: [0, 2, 3]}
-
 
 class Game:
     def __init__(self, rows, columns):
@@ -37,33 +37,25 @@ class Game:
             row=input().split()
             for j in range(self.columns):
                 self.board[i][j]=int(row[j])
-        
+                if self.board[i][j]!=EMPTY:
+                    self.pieces+=1
 
     def printGame(self):
         for i in range(self.rows):
             for j in range(self.columns):
-                print (self.board[i][j])
-
+                print (self.board[i][j], end=' ')
+            print()
 
     def DFS(self, i, j, visited):
-       visited[i][j]=True
+        visited[i][j] = True
 
-       #test right
-       if(j-1>=0):
-           if(not visited[i][j-1] and self.board[i][j-1]):
-               self.DFS(i, j-1, visited)
-       #test left
-       elif(j+1<=self.columns):
-           if(not visited[i][j+1] and self.board[i][j-1]):
-               self.DFS(i, j+1, visited)
-       #test up
-       elif(i-1>=0):
-           if(not visited[i-1][j] and self.board[i][j-1]):
-               self.DFS(i-1, j, visited)
-       #test down
-       elif(i+1<=self.rows):
-           if(not visited[i+1][j] and self.board[i][j-1]):
-               self.DFS(i, j-1, visited)
+        for k in range(4): 
+            iNbr = i + posVizinhoLinha[k]
+            jNbr = j + posVizinhoColuna[k]
+            if ((iNbr >= 0 and iNbr < self.rows) and (jNbr >= 0 and jNbr < self.columns)):
+                if (not visited[iNbr][jNbr] and self.board[iNbr][jNbr]):
+                    # visit neighbor
+                    self.DFS(iNbr, jNbr, visited)
     
     def islandCheck(self):
         visited = [[False for j in range(self.columns)] for i in range(self.rows)] 
@@ -97,17 +89,16 @@ class Game:
         print(self.nsolutions)
         for solution in sorted(self.solutions):
             for value in solution:
-                print(str(value))
+                print(str(value), end=' ')
             print()
 
 
     def play (self):
-        self.printGame()
+        #self.printGame()
         success = False
         state_hits = 0
 
         key = self.calculateKey()
-        print("key: %d", key)
         if key in self.memo:
             return self.memo[key]
 
@@ -115,19 +106,17 @@ class Game:
             self.memo[key] = [False, 0]
             return self.memo[key]
             
-        print("npecas") #nao ta chegando aqui
-        print(self.pieces)
-        if (self.pieces == 1):
-            for i in range(len(self.board)):
-                for j in range(len(self.board[i])):
-                    if (self.board[i][j] != 0):
+        if self.checkWin():
+            for i in range(self.rows):
+                for j in range(self.columns):
+                    if (self.board[i][j] != EMPTY):
                         self.solutions.append([i+1, j+1, self.board[i][j]])
-                        self.nsolutions = self.nsolutions+1
+                        self.nsolutions +=1 
                         self.memo[key] = [True, 1]
                         return self.memo[key]
 
-        for i in range(len(self.board)):
-            for j in range(len(self.board[i])):
+        for i in range(self.rows):
+            for j in range(self.columns):
                 current = self.board[i][j]
                 if (current != 0):
                     for k in range(4): 
@@ -135,7 +124,7 @@ class Game:
                         jNbr = j + posVizinhoColuna[k]
                         if ((iNbr >= 0 and iNbr < self.rows) and (jNbr >= 0 and jNbr < self.columns)):
                             neighbor = self.board[iNbr][jNbr]
-                            if (neighbor not in invalid_moves[current]):
+                            if (neighbor not in check_janken[current]):
                                 self.board[iNbr][jNbr] = current
                                 self.board[i][j] = 0
                                 self.pieces -= 1
@@ -154,8 +143,7 @@ class Game:
 
 
 def checkJanken (x1, x2):
-    if ((x1!=EMPTY and x2!=EMPTY) and ((x1==SCISSORS and x2==PAPER) or (x1==PAPER and x2==ROCK) or (x1==ROCK and
-                                                                                                    x2==SCISSORS))):
+    if ((x1!=EMPTY and x2!=EMPTY) and ((x1==SCISSORS and x2==PAPER) or (x1==PAPER and x2==ROCK) or (x1==ROCK and x2==SCISSORS))):
         return True
     else: 
         return False
@@ -165,12 +153,61 @@ def main():
     sR, sC = input().split()
     game=Game(int(sR), int(sC))
     game.readGame()
-    #game.printGame() tá ok a leitura
-    
-    # search for solutions
+    #game.printGame()
     game.play()
-
     game.printSolution()
 
 if __name__ == '__main__':
     main()
+
+#     "I want to play a game" - Jigsaw
+
+#    ─────▄██▀▀▀▀▀▀▀▀▀▀▀▀▀██▄─────
+#    ────███───────────────███────
+#    ───███─────────────────███───
+#    ──███───▄▀▀▄─────▄▀▀▄───███──
+#    ─████─▄▀────▀▄─▄▀────▀▄─████─
+#    ─████──▄████─────████▄──█████
+#    █████─██▓▓▓██───██▓▓▓██─█████
+#    █████─██▓█▓██───██▓█▓██─█████
+#    █████─██▓▓▓█▀─▄─▀█▓▓▓██─█████
+#    ████▀──▀▀▀▀▀─▄█▄─▀▀▀▀▀──▀████
+#    ███─▄▀▀▀▄────███────▄▀▀▀▄─███
+#    ███──▄▀▄─█──█████──█─▄▀▄──███
+#    ███─█──█─█──█████──█─█──█─███
+#    ███─█─▀──█─▄█████▄─█──▀─█─███
+#    ███▄─▀▀▀▀──█─▀█▀─█──▀▀▀▀─▄███
+#    ████─────────────────────████
+#    ─███───▀█████████████▀───████
+#    ─███───────█─────█───────████
+#    ─████─────█───────█─────█████
+#    ───███▄──█────█────█──▄█████─
+#    ─────▀█████▄▄███▄▄█████▀─────
+#    ──────────█▄─────▄█──────────
+#    ──────────▄█─────█▄──────────
+#    ───────▄████─────████▄───────
+#    ─────▄███████───███████▄─────
+#    ───▄█████████████████████▄───
+#    ─▄███▀───███████████───▀███▄─
+#    ███▀─────███████████─────▀███
+#    ▌▌▌▌▒▒───███████████───▒▒▐▐▐▐
+#    ─────▒▒──███████████──▒▒─────
+#    ──────▒▒─███████████─▒▒──────
+#    ───────▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒───────
+#    ─────────████░░█████─────────
+#    ────────█████░░██████────────
+#    ──────███████░░███████───────
+#    ─────█████──█░░█──█████──────
+#    ─────█████──████──█████──────
+#    ──────████──████──████───────
+#    ──────████──████──████───────
+#    ──────████───██───████───────
+#    ──────████───██───████───────
+#    ──────████──████──████───────
+#    ─██────██───████───██─────██─
+#    ─██───████──████──████────██─
+#    ─███████████████████████████─
+#    ─██─────────████──────────██─
+#    ─██─────────████──────────██─
+#    ────────────████─────────────
+#    ─────────────██──────────────
