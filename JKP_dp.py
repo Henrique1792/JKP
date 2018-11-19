@@ -5,7 +5,7 @@
 import random
 from collections import OrderedDict
 
-#globals, don't touch (couldnt find anything as #define)
+#globals, don't touch, it's art (couldnt find anything as #define)
 check_janken = {1: [0, 1, 3], 2: [0, 1, 2], 3: [0, 2, 3]}
 
 EMPTY = 0
@@ -18,6 +18,8 @@ posVizinhoColuna=[0, 0, -1, +1]
 
 class Game:
     def __init__(self, rows, columns):
+
+        #everything will be here, to be instanced as game
         self.rows=rows
         self.columns=columns
         self.pieces=0
@@ -25,12 +27,11 @@ class Game:
         self.board=[[0 for x in range(columns)] for y in range(rows)]
         self.solutions=[]
         self.nsolutions=0
-
-        #Zobrist hash table
-        #https://www.youtube.com/watch?v=QYNRvMolN20
         self.hashTable = [[[random.randint(1, 2**64-1)for i in range(4)]
                        for j in range(columns)]
                       for k in range(rows)]
+        #Zobrist hash table
+        #https://www.youtube.com/watch?v=QYNRvMolN20
 
     def readGame(self):
         for i in range(self.rows):
@@ -46,16 +47,18 @@ class Game:
                 print (self.board[i][j], end=' ')
             print()
 
+    #DFS and island check as oriented na monitoria
+
     def DFS(self, i, j, visited):
         visited[i][j] = True
 
         for k in range(4): 
-            iNbr = i + posVizinhoLinha[k]
-            jNbr = j + posVizinhoColuna[k]
-            if ((iNbr >= 0 and iNbr < self.rows) and (jNbr >= 0 and jNbr < self.columns)):
-                if (not visited[iNbr][jNbr] and self.board[iNbr][jNbr]):
+            iCopy = i + posVizinhoLinha[k]
+            jCopy = j + posVizinhoColuna[k]
+            if ((iCopy >= 0 and iCopy < self.rows) and (jCopy >= 0 and jCopy < self.columns)):
+                if (not visited[iCopy][jCopy] and self.board[iCopy][jCopy]):
                     # visit neighbor
-                    self.DFS(iNbr, jNbr, visited)
+                    self.DFS(iCopy, jCopy, visited)
     
     def islandCheck(self):
         visited = [[False for j in range(self.columns)] for i in range(self.rows)] 
@@ -92,7 +95,6 @@ class Game:
                 print(str(value), end=' ')
             print()
 
-
     def play (self):
         #self.printGame()
         success = False
@@ -120,19 +122,19 @@ class Game:
                 current = self.board[i][j]
                 if (current != 0):
                     for k in range(4): 
-                        iNbr = i + posVizinhoLinha[k]
-                        jNbr = j + posVizinhoColuna[k]
-                        if ((iNbr >= 0 and iNbr < self.rows) and (jNbr >= 0 and jNbr < self.columns)):
-                            neighbor = self.board[iNbr][jNbr]
+                        iCopy = i + posVizinhoLinha[k]
+                        jCopy = j + posVizinhoColuna[k]
+                        if ((iCopy >= 0 and iCopy < self.rows) and (jCopy >= 0 and jCopy < self.columns)):
+                            neighbor = self.board[iCopy][jCopy]
                             if (neighbor not in check_janken[current]):
-                                self.board[iNbr][jNbr] = current
+                                self.board[iCopy][jCopy] = current
                                 self.board[i][j] = 0
                                 self.pieces -= 1
                                 jump = self.play()
                                 if (jump[0]):
                                     success = True
                                     state_hits += jump[1]
-                                self.board[iNbr][jNbr] = neighbor
+                                self.board[iCopy][jCopy] = neighbor
                                 self.board[i][j] = current
                                 self.pieces += 1
         if (not success):
