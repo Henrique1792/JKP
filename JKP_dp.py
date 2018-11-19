@@ -13,6 +13,9 @@ PAPER = 3
 posVizinhoLinha=[-1, 1, 0, 0]
 posVizinhoColuna=[0, 0, -1, +1]
 
+invalid_moves = {1: [0, 1, 3], 2: [0, 1, 2], 3: [0, 2, 3]}
+
+
 class Game:
     def __init__(self, rows, columns):
         self.rows=rows
@@ -22,7 +25,6 @@ class Game:
         self.board=[[0 for x in range(columns)] for y in range(rows)]
         self.solutions=[]
         self.nsolutions=0
-
 
         #Zobrist hash table
         #https://www.youtube.com/watch?v=QYNRvMolN20
@@ -41,12 +43,7 @@ class Game:
         for i in range(self.rows):
             for j in range(self.columns):
                 print (self.board[i][j])
-                print (' ')
-            print()
 
-    """def Dynammic_Solver(self):
-
-    def printSolution(self)  """ 
 
     def DFS(self, i, j, visited):
        visited[i][j]=True
@@ -73,7 +70,7 @@ class Game:
         islands=0
         for i in range(self.rows):
             for j in range(self.columns):
-                if(visited[i][j]==False and self.board[i][j]!=0):
+                if visited[i][j]==False and self.board[i][j]:
                     self.DFS(i, j, visited)
                     islands+=1
                 if(islands > 1):
@@ -94,14 +91,23 @@ class Game:
                     key ^= self.hashTable[i][j][self.board[i][j]]
         return key
 
+    def printSolution(self):
+        hits = self.memo.popitem()[1][1]
+        print(hits)
+        print(self.nsolutions)
+        for solution in sorted(self.solutions):
+            for value in solution:
+                print(str(value))
+            print()
+
+
     def play (self):
+        self.printGame()
         success = False
         state_hits = 0
 
-        self.rows = len(self.board)
-        self.columns = len(self.board[0])
-
         key = self.calculateKey()
+        print("key: %d", key)
         if key in self.memo:
             return self.memo[key]
 
@@ -109,11 +115,14 @@ class Game:
             self.memo[key] = [False, 0]
             return self.memo[key]
             
-        if (self.checkWin()):
+        print("npecas") #nao ta chegando aqui
+        print(self.pieces)
+        if (self.pieces == 1):
             for i in range(len(self.board)):
                 for j in range(len(self.board[i])):
                     if (self.board[i][j] != 0):
                         self.solutions.append([i+1, j+1, self.board[i][j]])
+                        self.nsolutions = self.nsolutions+1
                         self.memo[key] = [True, 1]
                         return self.memo[key]
 
@@ -156,19 +165,12 @@ def main():
     sR, sC = input().split()
     game=Game(int(sR), int(sC))
     game.readGame()
-    game.printGame()
+    #game.printGame() tá ok a leitura
     
     # search for solutions
     game.play()
-    hits = game.memo.popitem()[1][1]
 
-    print(hits)
-    print(len(game.solutions))
-    # display sorted unique solutions
-    for solution in sorted(game.solutions):
-        for value in solution:
-            print(str(value), end=' ')
-        print()
+    game.printSolution()
 
 if __name__ == '__main__':
     main()
