@@ -54,19 +54,19 @@ class Game:
        #test right
        if(j-1>=0):
            if(not visited[i][j-1] and self.board[i][j-1]):
-               DFS(i, j-1, visited)
+               self.DFS(i, j-1, visited)
        #test left
        elif(j+1<=self.columns):
            if(not visited[i][j+1] and self.board[i][j-1]):
-               DFS(i, j+1, visited)
+               self.DFS(i, j+1, visited)
        #test up
        elif(i-1>=0):
            if(not visited[i-1][j] and self.board[i][j-1]):
-               DFS(i-1, j, visited)
+               self.DFS(i-1, j, visited)
        #test down
        elif(i+1<=self.rows):
            if(not visited[i+1][j] and self.board[i][j-1]):
-               DFS(i, j-1, visited)
+               self.DFS(i, j-1, visited)
     
     def islandCheck(self):
         visited = [[False for j in range(self.columns)] for i in range(self.rows)] 
@@ -74,7 +74,7 @@ class Game:
         for i in range(self.rows):
             for j in range(self.columns):
                 if(visited[i][j]==False and self.board[i][j]!=0):
-                    DFS(i, j, visited)
+                    self.DFS(i, j, visited)
                     islands+=1
                 if(islands > 1):
                     return False
@@ -91,7 +91,7 @@ class Game:
         for i in range(len(self.board)):
             for j in range(len(self.board[i])):
                 if self.board[i][j] != 0:
-                    key ^= self.hashtable[i][j][self.board[i][j]]
+                    key ^= self.hashTable[i][j][self.board[i][j]]
         return key
 
     def play (self):
@@ -101,15 +101,15 @@ class Game:
         self.rows = len(self.board)
         self.columns = len(self.board[0])
 
-        key = computeKey(table, self.board)
+        key = self.calculateKey()
         if key in self.memo:
             return self.memo[key]
 
-        if (not checkIslands(self.board)):
+        if (not self.islandCheck()):
             self.memo[key] = [False, 0]
             return self.memo[key]
             
-        if (checkWin(self)):
+        if (self.checkWin()):
             for i in range(len(self.board)):
                 for j in range(len(self.board[i])):
                     if (self.board[i][j] != 0):
@@ -130,7 +130,7 @@ class Game:
                                 self.board[iNbr][jNbr] = current
                                 self.board[i][j] = 0
                                 self.pieces -= 1
-                                jump = solve(self.memo, table, self.board, self.solutions, self.pieces)
+                                jump = self.play()
                                 if (jump[0]):
                                     success = True
                                     state_hits += jump[1]
@@ -159,7 +159,7 @@ def main():
     game.printGame()
     
     # search for solutions
-    play(game)
+    game.play()
     hits = game.memo.popitem()[1][1]
 
     print(hits)
