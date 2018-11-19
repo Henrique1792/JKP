@@ -71,8 +71,8 @@ class Game:
     def islandCheck(self):
         visited = [[False for j in range(self.columns)] for i in range(self.rows)] 
         islands=0
-        for(i in range(self.rows)):
-            for(j in range(self.columns)):
+        for i in range(self.rows):
+            for j in range(self.columns):
                 if(visited[i][j]==False and self.board[i][j]!=0):
                     DFS(i, j, visited)
                     islands+=1
@@ -83,7 +83,7 @@ class Game:
     def checkWin(self):
         if (self.pieces == 1):
             return True
-        elif :
+        else :
             return False
 
     def calculateKey(self):
@@ -145,9 +145,10 @@ class Game:
 
 
 def checkJanken (x1, x2):
-    if ((x1!=EMPTY and x2!=EMPTY) and ((x1==SCISSORS and x2==PAPER) or (x1==PAPER and x2==ROCK) or (x1==ROCK and x2==SCISSORS)))
+    if ((x1!=EMPTY and x2!=EMPTY) and ((x1==SCISSORS and x2==PAPER) or (x1==PAPER and x2==ROCK) or (x1==ROCK and
+                                                                                                    x2==SCISSORS))):
         return True
-    elif 
+    else: 
         return False
 
 
